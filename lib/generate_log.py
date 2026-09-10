@@ -1,19 +1,38 @@
+"""Create timestamped text files containing log entries."""
+
 from datetime import datetime
-import os
 
-def generate_log(data):
-    # TODO: Implement log generation logic
 
-    # STEP 1: Validate input
-    # Hint: Check if data is a list
+def generate_log(entries):
+    """Create today's log file and return its filename.
 
-    # STEP 2: Generate a filename with today's date (e.g., "log_20250408.txt")
-    # Hint: Use datetime.now().strftime("%Y%m%d")
+    Args:
+        entries: A list of values to write, one value per line. An empty list
+            creates an empty log file.
 
-    # STEP 3: Write the log entries to a file using File I/O
-    # Use a with open() block and write each line from the data list
-    # Example: file.write(f"{entry}\n")
+    Returns:
+        The name of the created log file.
 
-    # STEP 4: Print a confirmation message with the filename
+    Raises:
+        ValueError: If ``entries`` is not a list.
+    """
+    if not isinstance(entries, list):
+        raise ValueError("entries must be provided as a list")
 
-    pass
+    filename = f"log_{datetime.now():%Y%m%d}.txt"
+
+    with open(filename, "w", encoding="utf-8") as log_file:
+        for entry in entries:
+            log_file.write(f"{entry}\n")
+
+    print(f"Log file created: {filename}")
+    return filename
+
+
+if __name__ == "__main__":
+    sample_entries = [
+        "User logged in",
+        "User updated profile",
+        "Report exported",
+    ]
+    generate_log(sample_entries)
